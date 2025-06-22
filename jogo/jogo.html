@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Adivinhação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            margin-bottom: 10px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            font-size: 16px;
+            border-radius: 4px;  
+            border: 1px solid #ccc;
+            width: 150px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #3e8e41;
+        }
+        #mensagem {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Jogo de Adivinhação</h1>
+        <p>Tente adivinhar o número secreto entre 1 e 100.</p>
+        <p>Você tem <span id="tentativas-restantes">10</span> tentativas.</p>
+        <input type="number" id="palpite" placeholder="Digite seu palpite">
+        <button onclick="verificarPalpite()">Chutar</button>
+        <p id="mensagem"></p>
+    </div>
+
+    <script>
+        // 1. Gerar número secreto e definir tentativas
+        let numeroSecreto = Math.floor(Math.random() * 100) + 1;
+        let tentativasRestantes = 10;
+
+        // 2. Função para verificar o palpite
+        function verificarPalpite() {
+            let palpite = parseInt(document.getElementById('palpite').value);
+            let mensagemElement = document.getElementById('mensagem');
+            let tentativasRestantesElement = document.getElementById('tentativas-restantes');
+
+            // 3. Validar o palpite
+            if (isNaN(palpite) || palpite < 1 || palpite > 100) {
+                mensagemElement.textContent = "Por favor, insira um número válido entre 1 e 100.";
+                return;
+            }
+
+            // 4. Comparar o palpite com o número secreto
+            if (palpite === numeroSecreto) {
+                mensagemElement.textContent = "Parabéns! Você acertou!";
+                document.getElementById('palpite').disabled = true; // Desabilita o input após acertar
+                return;
+            } else if (palpite < numeroSecreto) {
+                mensagemElement.textContent = "O número secreto é maior.";
+            } else {
+                mensagemElement.textContent = "O número secreto é menor.";
+            }
+
+            // 5. Decrementar tentativas
+            tentativasRestantes--;
+            tentativasRestantesElement.textContent = tentativasRestantes;
+
+            // 6. Verificar se o jogador perdeu
+            if (tentativasRestantes === 0) {
+                mensagemElement.textContent = `Você perdeu! O número secreto era ${numeroSecreto}.`;
+                document.getElementById('palpite').disabled = true; // Desabilita o input após perder
+            }
+        }
+    </script>
+</body>
+</html>
